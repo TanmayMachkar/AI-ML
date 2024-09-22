@@ -28,4 +28,20 @@ print(df.set_index("Date", inplace = True))
 print(df.loc["2019"])
 
 print(df.sort_index(inplace = True))
-print(df["2020-01-01": "2020-02-01"]) #get dates from jan 2020 to feb 2020
+print(df["2020-01-01": "2020-02-01"]["Close"].mean()) #get dates from jan 2020 to feb 2020
+
+print(df.loc["2020-01-01"]["High"])
+print(df.loc["2020-01-01"]["High"].max())
+
+highs = df["High"].resample("D").max()
+print(highs["2020-01-01"]) #Filter by day (previously it was filtered by hours)
+
+import matplotlib.pyplot as plt
+
+highs.plot()
+plt.show()
+
+numeric_df = df.select_dtypes(include='number')
+resampled_df = numeric_df.resample("W").mean()
+print(resampled_df) #resample the date column on a weekly basis and find the mean
+print(df.resample("W").agg({"Close":"mean", "High":"max", "Low":"min", "Volume":"sum"}))
